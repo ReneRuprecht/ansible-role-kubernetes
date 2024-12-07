@@ -1,0 +1,5 @@
+---
+roles:
+  - name: reneruprecht.containerd
+    src: https://github.com/reneruprecht/ansible-role-containerd.git
+    scm: git

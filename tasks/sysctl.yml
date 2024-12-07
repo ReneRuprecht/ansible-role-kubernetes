@@ -1,0 +1,10 @@
+---
+- name: Set kubernetes sysctl settings
+  ansible.posix.sysctl:
+    name: "{{ item }}"
+    state: present
+    value: '1'
+    reload: true
+  loop:
+    - net.bridge.bridge-nf-call-iptables
+    - net.bridge.bridge-nf-call-ip6tables

@@ -1,0 +1,10 @@
+---
+kubernetes_repo_url: >
+  https://pkgs.k8s.io/core:/stable:/v{{ kubernetes_version }}/deb/
+kubernetes_gpg_url: >
+  https://pkgs.k8s.io/core:/stable:/v{{ kubernetes_version }}/deb/Release.key
+
+kubernetes_dependency_packages:
+  - apt-transport-https
+  - ca-certificates
+  - curl

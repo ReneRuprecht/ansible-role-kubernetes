@@ -1,0 +1,21 @@
+---
+- name: Check if system is debian based
+  ansible.builtin.assert:
+    that:
+      - ansible_os_family == 'Debian'
+    fail_msg: "System must be debian based"
+  ignore_errors: false
+
+- name: Check if group exists
+  ansible.builtin.assert:
+    that:
+      - kubernetes_ansible_inventory_group in groups
+    fail_msg: "Group {{ kubernetes_ansible_inventory_group }} does not exists"
+  ignore_errors: false
+
+- name: Check if host is in group
+  ansible.builtin.assert:
+    that:
+      - inventory_hostname in groups[kubernetes_ansible_inventory_group]
+    fail_msg: "Host must be in group {{ kubernetes_ansible_inventory_group }}"
+  ignore_errors: false

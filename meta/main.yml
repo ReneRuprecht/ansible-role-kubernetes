@@ -1,0 +1,15 @@
+galaxy_info:
+  author: reneruprecht
+  description: Installs kubernetes
+  role_name: kubernetes
+
+  license: ""
+
+  min_ansible_version: "2.1"
+
+  galaxy_tags: []
+
+dependencies:
+  - name: reneruprecht.containerd
+    src: https://github.com/reneruprecht/ansible-role-containerd.git
+    scm: git

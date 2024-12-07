@@ -1,0 +1,39 @@
+---
+- name: Install dependencies
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ kubernetes_dependency_packages }}"
+
+- name: Add kubernetes repository with deb822_repository
+  ansible.builtin.deb822_repository:
+    name: kubernetes
+    types: deb
+    uris: "{{ kubernetes_repo_url }}"
+    suites: "/"
+    components: []
+    architectures: amd64
+    signed_by: "{{ kubernetes_gpg_url }}"
+
+- name: Update apt
+  ansible.builtin.apt:
+    update_cache: true
+  when: ansible_os_family == 'Debian'
+
+- name: Install Kubernetes packages
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: present
+  loop: "{{ kubernetes_packages }}"
+
+- name: Hold Kubernetes packages
+  ansible.builtin.dpkg_selections:
+    name: "{{ item }}"
+    selection: hold
+  loop: "{{ kubernetes_packages }}"
+  when: ansible_os_family == 'Debian'
+
+- name: Enable and start kubelet service
+  ansible.builtin.systemd:
+    name: kubelet
+    enabled: "{{ kubernetes_kublet_enabled }}"

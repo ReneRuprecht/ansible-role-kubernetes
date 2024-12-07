@@ -1,0 +1,58 @@
+---
+dependency:
+  name: galaxy
+  options:
+    ignore_errors: true
+
+driver:
+  name: vagrant
+  provider:
+    name: libvirt
+
+platforms:
+  - name: debian12-containerd
+    box: debian/bookworm64
+    groups:
+      - kubernetes
+    provider_options:
+      memory: 2048
+      cpus: 2
+
+  - name: debian12-containerd-1
+    box: debian/bookworm64
+    groups:
+        - kubernetes
+    provider_options:
+      memory: 2048
+      cpus: 2
+
+  # - name: debian12-containerd-2
+  #   box: debian/bookworm64
+  #   groups:
+  #     - custom_cluster_1
+  #   provider_options:
+  #     memory: 2048
+  #     cpus: 2
+  #
+  # - name: debian12-containerd-3
+  #   box: debian/bookworm64
+  #   groups:
+  #     - custom_cluster_1
+  #   provider_options:
+  #     memory: 2048
+  #     cpus: 2
+
+provisioner:
+  name: ansible
+  inventory:
+    host_vars:
+      debian12-containerd-1:
+        kubernetes_is_control_plane: false
+      debian12-containerd-2:
+        kubernetes_ansible_inventory_group: custom_cluster_1
+      debian12-containerd-3:
+        kubernetes_is_control_plane: false
+        kubernetes_ansible_inventory_group: custom_cluster_1
+
+verifier:
+  name: ansible

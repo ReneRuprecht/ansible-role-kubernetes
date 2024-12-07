@@ -1,0 +1,5 @@
+---
+kubernetes_packages:
+  - "kubelet"
+  - "kubectl"
+  - "kubeadm"

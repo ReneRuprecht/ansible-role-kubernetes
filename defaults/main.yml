@@ -1,0 +1,32 @@
+---
+kubernetes_version: "1.31"
+
+kubernetes_is_control_plane: true
+kubernetes_ansible_inventory_group: "kubernetes"
+
+kubernetes_kublet_enabled: true
+
+kubernetes_pod_network_cidr: "10.244.0.0/16"
+
+kubernetes_network_config_file_path: >
+  https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
+
+kubernetes_cgroup_driver: "systemd"
+
+kubernetes_apiserver_advertise_address: "{{ ansible_default_ipv4.address }}"
+
+kubernetes_kubeadm_config_file_path: '/etc/kubernetes/kubeadm-config.yaml'
+
+kubernetes_ignore_preflight_errors: ""
+
+kubernetes_init_config:
+  localAPIEndpoint:
+    advertiseAddress: "{{ kubernetes_apiserver_advertise_address }}"
+
+kubernetes_kubelet_config:
+  cgroupDriver: "{{ kubernetes_cgroup_driver }}"
+
+kubernetes_cluster_config:
+  networking:
+    podSubnet: "{{ kubernetes_pod_network_cidr }}"
+  kubernetesVersion: "stable-{{ kubernetes_version }}"
