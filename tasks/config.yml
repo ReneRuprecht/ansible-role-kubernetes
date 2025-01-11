@@ -1,7 +1,0 @@
----
-- name: Add custom kubelet arguments
-  ansible.builtin.template:
-    src: kubeadm-conf.j2
-    dest: "{{ kubernetes_kubeadm_config_file_path }}"
-    mode: "0644"
-  notify: Restart kubelet

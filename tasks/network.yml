@@ -1,9 +1,0 @@
----
-- name: Configure network
-  ansible.builtin.command:
-    cmd: "kubectl apply -f {{ kubernetes_network_config_file_path }}"
-  until: kubernetes_apply_config_result is not failed
-  retries: 10
-  delay: 10
-  register: kubernetes_apply_config_result
-  changed_when: "'created' in kubernetes_apply_config_result.stdout"

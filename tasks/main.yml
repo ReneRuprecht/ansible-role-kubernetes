@@ -15,22 +15,16 @@
 - name: Setup control plane
   when: kubernetes_is_control_plane
   block:
-    - name: Configure kubernetes
-      ansible.builtin.import_tasks: config.yml
-
     - name: Setup control plane
       ansible.builtin.import_tasks: control_plane.yml
 
-    - name: Configure network
-      ansible.builtin.import_tasks: network.yml
-
-    - name: Get the kubeadm join command from the Kubernetes control plane.
+    - name: Get worker node join command
       ansible.builtin.command:
         cmd: kubeadm token create --print-join-command
       register: kubernetes_kubeadm_join_command_result
       changed_when: false
 
-- name: Set kubeadm join command
+- name: Set worker node join command
   ansible.builtin.set_fact:
     kubernetes_join_command: >
       {{ kubernetes_kubeadm_join_command_result.stdout }}
@@ -39,7 +33,7 @@
   delegate_facts: true
   loop: "{{ groups[kubernetes_ansible_inventory_group] }}"
 
-- name: Debug print join command
+- name: Debug print worker node join command
   ansible.builtin.debug:
     msg: "{{ kubernetes_join_command }}"
     verbosity: 2

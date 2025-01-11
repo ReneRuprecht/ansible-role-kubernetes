@@ -25,6 +25,8 @@
     name: "{{ item }}"
     state: present
   loop: "{{ kubernetes_packages }}"
+  retries: 3
+  delay: 10
 
 - name: Hold Kubernetes packages
   ansible.builtin.dpkg_selections:

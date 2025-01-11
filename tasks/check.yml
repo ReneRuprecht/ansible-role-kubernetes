@@ -19,3 +19,26 @@
       - inventory_hostname in groups[kubernetes_ansible_inventory_group]
     fail_msg: "Host must be in group {{ kubernetes_ansible_inventory_group }}"
   ignore_errors: false
+
+- name: Check if multiple control planes exists
+  when:
+    - inventory_hostname in groups['k8s-master']
+    - groups['k8s-master'] | length > 1
+  ansible.builtin.assert:
+    that:
+      - kubernetes_cluster_config.controlPlaneEndpoint is defined
+      - kubernetes_cluster_config.controlPlaneEndpoint != ''
+    fail_msg: "loadbalancer in kubernetes_cluster_config.controlPlaneEndpoint must be defined"
+  ignore_errors: false
+  any_errors_fatal: true
+
+- name: Check if only 2 control planes exists
+  when:
+    - inventory_hostname in groups['k8s-master']
+    - groups['k8s-master'] | length > 1
+  ansible.builtin.assert:
+    that:
+      - groups['k8s-master'] | length > 2
+    fail_msg: "at least 3 or more control planes are required"
+  ignore_errors: false
+  any_errors_fatal: true
