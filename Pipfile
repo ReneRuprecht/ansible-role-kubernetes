@@ -1,0 +1,14 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+ansible-core = "~=2.17"
+
+[dev-packages]
+molecule = "*"
+molecule-plugins = {extras = ["vagrant", "docker"], version = "*"}
+
+[requires]
+python_version = "3.10"
