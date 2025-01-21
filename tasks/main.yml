@@ -6,6 +6,9 @@
   ansible.builtin.include_vars: debian.yml
   when: ansible_os_family == 'Debian'
 
+- name: Setup system
+  ansible.builtin.import_tasks: system.yml
+
 - name: Setup sysctl
   ansible.builtin.import_tasks: sysctl.yml
 

@@ -1,0 +1,36 @@
+---
+- name: Ensure required kernel modules are loaded
+  ansible.builtin.command:
+    cmd: "{{ item }}"
+  with_items:
+    - modprobe overlay
+    - modprobe br_netfilter
+  changed_when: false
+
+- name: Ensure modules are present
+  ansible.builtin.lineinfile:
+    path: "/etc/modules-load.d/k8s.conf"
+    create: true
+    line: "{{ item }}"
+    mode: "0644"
+  with_items:
+    - overlay
+    - br_netfilter
+
+- name: Disable swap at runtime
+  ansible.builtin.command:
+    cmd: swapoff -a
+  changed_when: false
+
+- name: Remove swap entry from /etc/fstab
+  ansible.builtin.lineinfile:
+    path: /etc/fstab
+    state: absent
+    regexp: '.*swap.*'
+
+- name: Ensure swap is disabled permanently
+  ansible.builtin.shell: |
+    grep -q 'swap' /proc/swaps || echo 'Swap is disabled'
+  register: swap_status
+  changed_when: false
+  failed_when: "'Swap is disabled' not in swap_status.stdout"
