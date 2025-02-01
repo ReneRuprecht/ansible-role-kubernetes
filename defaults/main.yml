@@ -27,6 +27,7 @@ kubernetes_kubelet_config:
   cgroupDriver: "{{ kubernetes_cgroup_driver }}"
 
 kubernetes_cluster_config:
+  clusterName: "{{ kubernetes_cluster_name | default('kubernetes')}}"
   networking:
     podSubnet: "{{ kubernetes_pod_network_cidr }}"
   kubernetesVersion: "stable-{{ kubernetes_version }}"
