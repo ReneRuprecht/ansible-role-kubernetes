@@ -9,8 +9,7 @@ kubernetes_kublet_enabled: true
 kubernetes_pod_network_cidr: "10.244.0.0/16"
 
 kubernetes_network_config_file_path: >
-  https://raw.githubusercontent.com/flannel-io/flannel/master/Documentation/kube-flannel.yml
-
+  https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
 kubernetes_cgroup_driver: "systemd"
 
 kubernetes_apiserver_advertise_address: "{{ ansible_default_ipv4.address }}"
